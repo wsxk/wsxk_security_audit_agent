@@ -1,19 +1,19 @@
-# Base-Station Security Boundary
+# 基站安全边界
 
-Treat these as untrusted or boundary-crossing inputs:
+以下输入应视为不可信输入或跨安全边界输入：
 
-- Air-interface or core-network protocol messages: RRC, NGAP, S1AP, X2AP, F1AP, E1AP, GTP-C, GTP-U, SCTP, UDP, TCP.
-- OAM, CLI, northbound APIs, remote config, provisioning, telemetry import, upgrade packages, plugin/package loading.
-- IPC from lower-privilege processes, container boundaries, driver/user boundary, simulator/test harness input when compiled into production.
+- 空口或核心网协议消息：RRC、NGAP、S1AP、X2AP、F1AP、E1AP、GTP-C、GTP-U、SCTP、UDP、TCP。
+- OAM、CLI、北向 API、远程配置、开局/发放、遥测导入、升级包、插件/软件包加载。
+- 来自低权限进程的 IPC、容器边界、驱动/用户态边界、被编入生产版本的仿真器或测试框架输入。
 
-High-risk bug classes:
+高风险缺陷类型：
 
-- Length-field misuse, ASN.1/PER/TLV parsing errors, integer overflow, signed/unsigned conversion, unchecked memcpy/memmove/string formatting, allocation-size mismatch.
-- State-machine bypass, unauthenticated management action, downgrade or debug mode enablement, unsafe default credentials, weak crypto or certificate validation bypass.
-- Log or telemetry exposure of IMSI/SUPI/SUCI, keys, tokens, credentials, session identifiers, subscriber data, or network topology.
+- 长度字段误用、ASN.1/PER/TLV 解析错误、整数溢出、有符号/无符号转换、未检查的 memcpy/memmove/字符串格式化、分配大小不匹配。
+- 状态机绕过、未认证管理操作、降级或调试模式开启、不安全默认凭据、弱加密或证书校验绕过。
+- 日志或遥测泄露 IMSI/SUPI/SUCI、密钥、token、凭据、会话标识、用户数据或网络拓扑。
 
-Usually lower severity or drop:
+通常应降级或丢弃：
 
-- Code reachable only from unit tests, fuzz harnesses, offline tools, disabled debug builds, or local admin-only maintenance commands.
-- Inputs already constrained by authenticated trusted provisioning and validated before this module boundary.
-- Paths missing a concrete call chain from entrypoint to sink.
+- 仅单元测试、fuzz 框架、离线工具、禁用的调试构建，或本地管理员维护命令可达的代码。
+- 输入已由认证可信的开局/发放流程约束，并在进入本模块边界前完成校验。
+- 缺少从入口函数到 sink 的具体调用链。

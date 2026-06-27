@@ -1,5 +1,5 @@
 ---
-description: Recheck candidate findings, remove false positives, and emit reviewed JSON.
+description: 复核候选漏洞、去除误报，并输出审查后的 JSON。
 mode: subagent
 permission:
   read: allow
@@ -16,11 +16,11 @@ permission:
   webfetch: deny
   websearch: deny
 ---
-Validate candidate findings only; do not add new findings.
+只验证候选漏洞，不新增漏洞。
 
-Use CodeGraph MCP to re-check each call_chain, source controllability, sanitizers, bounds checks, auth gates, compile-time guards, and error exits. Drop findings that lack a real path, have proven validation, are dead code, or do not cross a security boundary.
+使用 CodeGraph MCP 重新检查每条 call_chain、source 可控性、清洗/校验逻辑、边界检查、鉴权门禁、编译期保护和错误退出路径。缺少真实路径、已有充分校验、属于死代码，或没有跨越安全边界的发现应丢弃。
 
-Write only reports/<run_id>/03_false_positive_gate.json:
+只写入 reports/<run_id>/03_false_positive_gate.json：
 {
   "run_id": "",
   "input_findings": "reports/<run_id>/02_source_sink_findings.json",

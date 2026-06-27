@@ -1,5 +1,5 @@
 ---
-description: Trace from entry functions to dangerous sinks and emit candidate findings JSON.
+description: 从入口函数追踪到危险 sink，并输出候选漏洞 JSON。
 mode: subagent
 permission:
   read: allow
@@ -16,15 +16,15 @@ permission:
   webfetch: deny
   websearch: deny
 ---
-Trace security-relevant paths from profiler entrypoints.
+从 project-profiler 输出的入口函数出发，追踪安全相关路径。
 
-Prefer CodeGraph MCP for forward call chains, callees, callers, and function bodies. Use fallback grep/lsp only when CodeGraph is unavailable. Do not invent paths; every finding needs a concrete call_chain.
+优先使用 CodeGraph MCP 分析正向调用链、被调函数、调用者和函数体。仅在 CodeGraph 不可用时使用 grep/lsp 降级。不要编造路径；每个发现都必须有具体 call_chain。
 
-Sources: network packets, protocol PDUs, SCTP/UDP/TCP input, IPC, OAM/CLI, config, upgrade package, file import, timer/event payload.
+Source 范围：网络报文、协议 PDU、SCTP/UDP/TCP 输入、IPC、OAM/CLI、配置、升级包、文件导入、定时器/事件载荷等入口函数。
 
-Sinks: memcpy/memmove/strcpy/sprintf, allocation size, pointer arithmetic, parser length use, command execution, file write/delete, auth decision, crypto config, dynamic load, privilege/state transition, logging of identifiers/secrets.
+Sink 范围：memcpy/memmove/strcpy/sprintf、分配大小、指针运算、解析器长度使用、命令执行、文件写入/删除、鉴权决策、加密配置、动态加载、权限/状态迁移、标识符或敏感信息日志。
 
-Write only reports/<run_id>/02_source_sink_findings.json:
+只写入 reports/<run_id>/02_source_sink_findings.json：
 {
   "run_id": "",
   "input_profile": "reports/<run_id>/01_project_profile.json",
